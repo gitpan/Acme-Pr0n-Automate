@@ -1,0 +1,9 @@
+Automate.pm
+Changes
+Makefile.PL
+MANIFEST
+README
+test.pl
+lib/Acme/Pr0n/Automate/Fetcher/Easypic.pm
+lib/Acme/Pr0n/Automate/DB.pm
+lib/Acme/Pr0n/Automate/View.pm
