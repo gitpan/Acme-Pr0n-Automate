@@ -10,11 +10,16 @@ use fields qw(
 	categories
 	dir
 	timetables
+	cat_map
 );
 
 sub new {
 	my Acme::Pr0n::Automate::DB $self = fields::new(shift);
 	my $dir = shift;
+	my $categories = shift;
+
+	$categories = undef unless(keys %$categories);
+	$self->{cat_map} = $categories;
 
 	$self->{dir} = $dir;
 
@@ -116,6 +121,10 @@ sub store {
 	my $category = shift;
 	my $link = shift;
 	my $time = shift;
+
+	if(defined $category && defined $self->{cat_map}) {
+		return unless exists $self->{cat_map}->{$category};
+	}
 
 	# Return if the link is in the database
 	return if exists $self->{links}->{$link};

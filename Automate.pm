@@ -37,11 +37,10 @@ our %EXPORT_TAGS = (
 
 our @EXPORT_OK = ( @{$EXPORT_TAGS{'all'}}, @{$EXPORT_TAGS{'categories'}} );
 
-our @EXPORT = qw(
-	
+our @EXPORT = qw(	
 );
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 
 # Preloaded methods go here.
@@ -168,8 +167,18 @@ sub new {
 		die "Invalid source" unless exists $FETCH_ENGINE{$_};
 	}
 
+	my $categories = {};
+
+	if(exists $attr{categories}) {
+		if(ref $attr{categories} eq "ARRAY") {
+			%{$categories} = map { $_ => 1 } @{$attr{categories}};
+		} elsif($attr{categories}) {
+			$categories->{$attr{categories}} = 1;
+		}
+	}
+
 	# Create a database object
-	$self->{db} = Acme::Pr0n::Automate::DB->new($attr{db});
+	$self->{db} = Acme::Pr0n::Automate::DB->new($attr{db}, $categories);
 
 	return $self;
 }

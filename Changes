@@ -9,3 +9,7 @@ Revision history for Perl extension Acme::Pr0n::Automate.
 
 0.03  Fri Sep 20 11:20:00 2002
 	- fixed path problems
+
+0.04  Fir Sep 20 16:36:00 2002
+	- Added support for all categories @ Easypic
+	- Category fetching now works correctly
