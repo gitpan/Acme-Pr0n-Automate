@@ -40,7 +40,7 @@ our @EXPORT_OK = ( @{$EXPORT_TAGS{'all'}}, @{$EXPORT_TAGS{'categories'}} );
 our @EXPORT = qw(	
 );
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 
 # Preloaded methods go here.
@@ -114,7 +114,6 @@ our %FETCH_ENGINE;
 BEGIN {
 	my ($path) = __FILE__ =~ /^(.*)\.pm$/;
 
-	
 	opendir(FETCHERS, "$path/Fetcher");
 	my @dirs = grep { /\.pm$/ } readdir(FETCHERS);
 	closedir(FETCHERS);
@@ -142,6 +141,7 @@ use fields qw(
 	categories
 	sources
 	db
+	fetch_time
 );
 
 sub new {
@@ -186,10 +186,11 @@ sub new {
 sub fetch {
 	my Acme::Pr0n::Automate $self = shift;
 
-	# Loop thru fetch engines, and call fetch
-	my $i = 1;
+	$self->{fetch_time} = time;
+
+	# Loop thru fetch engines, and call fetch on each engine
 	foreach(keys %FETCH_ENGINE) {
-		$FETCH_ENGINE{$_}->fetch($self);
+		$FETCH_ENGINE{$_}->fetch($self) if(exists $self->{sources}->{$_});
 	}
 }
 
@@ -209,43 +210,109 @@ Acme::Pr0n::Automate - All your pr0n are belongs to us
 
 =head1 SYNOPSIS
 
-  PARENTAL ADVISORY - EXPLICIT CONTENT
-  ------------------------------------
+PARENTAL ADVISORY - EXPLICIT CODE
+------------------------------------
 
-  my $naughty = Acme::Pr0n::Automate->new(
-	sources => [qw(Easypic)],
-	categories => [BABES, LINGERIE, REDHEADS, PANTIES],
-	db => "/path/to/store/pr0n/database",
-	);
+ use Acme::Pr0n::Automate qw(:categories);
 
-  $naughty->fetch();
+ my $naughty = Acme::Pr0n::Automate->new(
+   sources => [qw(Free6 Easypic)],
+   categories => [BABES, LINGERIE, REDHEADS, PANTIES],
+   db => "naughty_db",
+ );
 
-  my $quality_stuff = $naughty->search(
-	from => time() - 86400, 
-	categories => [LINGERIE]
-  );
+ $naughty->fetch();
 
-  $quality_stuff->output(file => "today.html");
+ my $quality_stuff = $naughty->search(
+   from => time - 86400, 
+   categories => [BABES, REDHEADS]
+ );
+
+ $quality_stuff->output(file => "naughty_db/today.html");
 
 =head1 DESCRIPTION
 
 Acme::Pr0n::Automates automates your pr0n desires
 
-=head2 EXPORT
+=head1 METHODS (Acme::Pr0n::Automate)
 
-None by default.
+The database object
 
-:categories
-Get all categories, check Automate.pm for details
+=head2 Acme::Pr0n::Automate-E<gt>new( %ARGS )
+
+The new constructor takes the following named arguments:
+
+=over
+
+I<sources> - An arrayref of sources to retrive from
+
+I<categories> - An arrayref of categories we are interested of
+
+I<db> - The path where to store the database files
+
+=back
+
+On sucess, it will return a new Acme::Pr0n::Automate object which can 
+later be used for fetching and searching. If something goes wrong, such 
+as a missing argument it will die with an error.
+
+=head2 $obj-E<gt>fetch( )
+
+Fetch links from the sources given to the object when it was constructed.
+
+=head2 $obj-E<gt>search( %ARGS )
+
+Search the database for items. Pass the following arguments to control the search:
+
+=over
+
+I<from> - Get only items fetched after this timestamp
+
+I<categories> - An arrayref of categories to search
+
+=back
+
+Returns a new Acme::Pr0n::Automate::View object that contains the search results.
+
+=head1 METHODS (Acme::Pr0n::Automate::View);
+
+The search-result writer
+
+=head2 $res->output(file => "output.html");
+
+Writes the output of $res which is an Acme::Pr0n::Automate::View instance to the 
+file "output.html". The method uses the extension to determine what output filter 
+it should use. Only HTML is supported in this version.
+
+=head1 EXPORTS
+
+Nothing by default
+
+=head2 :categories
+
+Import constans for supported categories. 
+
+A backend might not support all categories, 
+so don't be suprised if you are missing a requested category.
+See CATEGORIES.txt for a list of categories.
+
+Always use the category constants where they are expected, do NOT
+use a string because this can and will probablly not do what you want.
 
 =head1 AUTHOR
 
-The pimp daddy <lt>claesjac@cpan.org<gt>
+The pimp daddy E<lt>claesjac at cpan.orgE<gt>
+
+=head1 DEDICATED TO
+
+This spot is open for volunteers
 
 =head1 SEE ALSO
 
-L<perl>.
-L<sex> || L<Sex>.
-UPC after midnight.
+L<perl>
+
+L<Sex.pm>
+
+L<Acme::Test::Pr0n>
 
 =cut

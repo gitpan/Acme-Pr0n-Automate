@@ -121,6 +121,7 @@ sub store {
 	my $category = shift;
 	my $link = shift;
 	my $time = shift;
+	my $description = shift;
 
 	if(defined $category && defined $self->{cat_map}) {
 		return unless exists $self->{cat_map}->{$category};
@@ -130,7 +131,7 @@ sub store {
 	return if exists $self->{links}->{$link};
 
 	# Store link in links with category
-	$self->{links}->{$link} = $category;
+	$self->{links}->{$link} = $description;
 	
 	# Store link in category with time
 	$self->open_category($category);
@@ -160,7 +161,7 @@ sub search {
 
 		my $match_cat = undef;
 		if(exists $attr{categories} && ref $attr{categories} eq "ARRAY" && @{$attr{categories}}) {
-			my $match_cat = "^" . join("|", @{$attr{categories}}) . "\$";
+			$match_cat = "^" . join("|", @{$attr{categories}}) . "\$";
 		}
 
 		foreach my $t (@files) {
@@ -178,7 +179,7 @@ sub search {
 				my $category = $val;
 
 				$result->{$category} = [] unless(ref $result->{$category} eq "ARRAY");
-				push @{$result->{$category}}, { link => $_, time => $t };
+				push @{$result->{$category}}, { link => $_, time => $t, desc => $self->{links}->{$_} };
 				
 			} continue { $i++ }
 

@@ -28,7 +28,11 @@ sub write_category {
 	my $io = $self->{_io};
 
 	print $io "<br><font size=\"+1\"><b>$name</b></font><br><br>" if $name;
-	print $io "<a href=\"$_->{link}\" target=\"_new\">$_->{link}</a><br>" foreach(@links);
+
+	foreach(@links) {
+		my $ext = $_->{desc} ? " ($_->{desc})" : "";
+		print $io "<a href=\"$_->{link}\" target=\"_new\">$_->{link}</a>$ext<br>" 
+	}
 
 	1;
 }

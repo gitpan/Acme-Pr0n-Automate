@@ -56,18 +56,18 @@ sub fetch {
 		return undef;
 	}
 
-	unless(($res->last_modified || time) > $self->{db}->last_modified) {
+	my $lm = $self->{fetch_time};
+
+	unless(($res->last_modified || $lm) > $self->{db}->last_modified) {
 		# We already have the data in the database, no need to update
 		return;
 	}
 
-	$self->{db}->last_modified(($res->last_modified || time));
-
-	my $content = $res->content();
+	$self->{db}->last_modified(($res->last_modified || $lm));
 
 	my $p = HTML::Parser->new(api_version => 3, start_h => [\&starttag, "self,tagname,attr"]);
 	$p->{db} = $self->{db};
-	$p->{lm} = $res->last_modified || time;	
+	$p->{lm} = $res->last_modified || $lm;	
 	$p->{is_valid} = 0;
 	$p->{result} = {};
 	$p->parse($res->content());
@@ -80,11 +80,11 @@ sub starttag {
 	if(lc($tag) eq "a") {
 		if(exists $attr->{href} && $self->{current}) {
 			my $href = $attr->{href};
-			return unless $href =~ qr!http://!;
+			return unless $href =~ qr!^http://!;
 			return if $href =~ /www\.easypic\.com/;
 			return if $href =~ /www\.cash4galleries\.com/;
 			return if $href =~ qr!http://[\.A-Za-z0-9\_\-]+/?$!;
-			$self->{db}->store($self->{current}, $href, $self->{lm});
+			$self->{db}->store($self->{current}, $href, $self->{lm}, "");
 		} elsif(exists $attr->{name} && $attr->{name} ne "") {
 			if(exists $CATMAP_INV{$attr->{name}}) {
 				$self->{current} = $CATMAP_INV{$attr->{name}};

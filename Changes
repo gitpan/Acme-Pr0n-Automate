@@ -13,3 +13,11 @@ Revision history for Perl extension Acme::Pr0n::Automate.
 0.04  Fir Sep 20 16:36:00 2002
 	- Added support for all categories @ Easypic
 	- Category fetching now works correctly
+
+0.05  Sat Sun 22 02:20:00 2002
+	- Added backend for Free6
+	- Fixed categories search problem
+	- Added support for description of link in db
+	- Updated HTML render to support descriptions
+	- Fixed potential timestamp problems in Easypic backend
+	- Fixed documentation
