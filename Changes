@@ -21,3 +21,7 @@ Revision history for Perl extension Acme::Pr0n::Automate.
 	- Updated HTML render to support descriptions
 	- Fixed potential timestamp problems in Easypic backend
 	- Fixed documentation
+
+0.06  Mon Jun 23 21:25:00 2003
+	- Updated Free6 backend HTML parser to match their new structure
+	- Fixed Acme::Pr0n::Automate::View to make link open in a new window

@@ -40,7 +40,7 @@ our @EXPORT_OK = ( @{$EXPORT_TAGS{'all'}}, @{$EXPORT_TAGS{'categories'}} );
 our @EXPORT = qw(	
 );
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 
 # Preloaded methods go here.
@@ -314,5 +314,11 @@ L<perl>
 L<Sex.pm>
 
 L<Acme::Test::Pr0n>
+
+=head1 COPYRIGHT AND LICENCE
+
+Acme::Pr0n::Automate is distributed under the same licens as Perl itself.
+
+Copyright (C) 2002-2003 Claes Jacobsson
 
 =cut

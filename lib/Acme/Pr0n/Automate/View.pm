@@ -31,7 +31,7 @@ sub write_category {
 
 	foreach(@links) {
 		my $ext = $_->{desc} ? " ($_->{desc})" : "";
-		print $io "<a href=\"$_->{link}\" target=\"_new\">$_->{link}</a>$ext<br>" 
+		print $io "<a href=\"$_->{link}\" target=\"_blank\">$_->{link}</a>$ext<br>\n" 
 	}
 
 	1;

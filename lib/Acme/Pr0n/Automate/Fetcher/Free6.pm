@@ -92,16 +92,15 @@ sub start {
 			$href = "http://$1";
 			$self->{in_link} = 1;
 			$self->{href} = $href;
-			$self->{act_td} = 0;
-			$self->{next_text} = 0;
+			$self->{act_td} = 1;
 		} elsif($tag eq 'td') {
-			$self->{next_text} = 1 if($self->{act_td});
+		    $self->{act_td}++ if $self->{act_td};
 		}
 }
 
 sub text {
 	my ($self, $text) = @_;
-	return unless($self->{in_link} && $self->{next_text});
+	return unless($self->{in_link} && $self->{act_td} == 4);
 	$text =~ s/^\W*//;
 
 	# Insert in database here
@@ -111,7 +110,6 @@ sub text {
 	$self->{in_link} = 0;
 	$self->{href} = "";
 	$self->{act_td} = 0;
-	$self->{next_text} = 0;
 }
 
 1;
