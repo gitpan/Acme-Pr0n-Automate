@@ -8,20 +8,22 @@
 use Test;
 BEGIN { plan tests => 1 };
 use Acme::Pr0n::Automate qw(:categories);
-use Data::Dumper qw(Dumper);
 ok(1); # If we made it this far, we're ok.
 
 my $naughty = Acme::Pr0n::Automate->new(
 	sources => [qw(Easypic)],
 	categories => [BABES, LINGERIE, REDHEADS, PANTIES],
-	db => "/home/naugthy/",
+	db => "naughty_db",
 );
 
 $naughty->fetch();
 
 my $quality_stuff = $naughty->search(from => time() - 86400, categories => [LINGERIE]);
 
-$quality_stuff->output(file => "today.html");
+$quality_stuff->output(file => "naughty_db/today.html");
+
+print STDERR "Your pr0n is available \@ naughty_db/today.html\n";
+
 
 #########################
 

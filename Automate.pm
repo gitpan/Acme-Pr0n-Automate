@@ -41,7 +41,7 @@ our @EXPORT = qw(
 	
 );
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 
 # Preloaded methods go here.
@@ -206,7 +206,7 @@ Acme::Pr0n::Automate - All your pr0n are belongs to us
   my $naughty = Acme::Pr0n::Automate->new(
 	sources => [qw(Easypic)],
 	categories => [BABES, LINGERIE, REDHEADS, PANTIES],
-	db => "/home/naugthy/",
+	db => "/path/to/store/pr0n/database",
 	);
 
   $naughty->fetch();

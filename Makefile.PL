@@ -7,6 +7,7 @@ WriteMakefile(
     'PREREQ_PM'		=> { 
 		"HTML::Parser" => 3.25,
 		"LWP::UserAgent" => 1.77,
+		"DB_File" => 1.73
 	}, # e.g., Module::Name => 1.1
     ($] >= 5.005 ?    ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM => 'Automate.pm', # retrieve abstract from module

@@ -6,3 +6,6 @@ Revision history for Perl extension Acme::Pr0n::Automate.
 
 0.02  Fri Sep 20 10:04:00 2002
 	- first version ready for CPAN release
+
+0.03  Fri Sep 20 11:20:00 2002
+	- fixed path problems
